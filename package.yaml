@@ -20,6 +20,7 @@ dependencies:
 - bytestring
 - aeson
 - time
+- ed25519
 
 library:
   source-dirs: src
