@@ -1,0 +1,28 @@
+name:                simple-token
+version:             0.1.0.0
+github:              "aleshgo/simple-token"
+license:             BSD3
+author:              "Oleksii Zhuravlov"
+maintainer:          "Oleksii Zhuravlov <aleshgo@gmail.com>"
+copyright:           "2019 Oleksii Zhuravlov"
+synopsis:            Simple library for sign verify payload
+description:         Simple library for sign verify payload
+category:            Cryptography, JSON
+stability:           Experimental
+
+dependencies:
+- base >= 4.7 && < 5
+
+library:
+  source-dirs: src
+
+tests:
+  simple-token-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    dependencies:
+    - simple-token
