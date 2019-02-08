@@ -10,8 +10,16 @@ description:         Simple library for sign verify payload
 category:            Cryptography, JSON
 stability:           Experimental
 
+default-extensions:
+- OverloadedStrings
+
 dependencies:
 - base >= 4.7 && < 5
+- encdec
+- text
+- bytestring
+- aeson
+- time
 
 library:
   source-dirs: src
@@ -26,3 +34,4 @@ tests:
     - -with-rtsopts=-N
     dependencies:
     - simple-token
+    - hspec
