@@ -35,3 +35,10 @@ instance Decoder (Encoded JSON) Payload where
   decode (Encoded a) =
     a |> Aeson.eitherDecode . BSL.fromStrict
       |> either (leftToErr "Decoding from JSON to Payload error") Ok
+
+verify :: Int -> Payload -> Result Payload
+verify time payload@(Payload _ iat exp)
+  | iat > exp = Err "Malformed token"
+  | iat > time = Err "Token not active"
+  | exp <= time = Err "Token has expired"
+  | otherwise = Ok payload

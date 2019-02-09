@@ -2,7 +2,7 @@ module Crypto.Token where
 
 import HuskPrelude
 import Data.Result
-import Crypto.Payload
+import Crypto.Payload as Payload
 import Crypto.Sign.Ed25519
   ( dsign
   , dverify
@@ -37,25 +37,20 @@ sign sk payload =
         |> Utils.unpad
   in Token (encoded payloadEnc <> "." <> encoded signatureEnc)
 
-splitToken :: Token -> Maybe (Encoded Base64Url, Encoded Base64Url)
-splitToken (Token str) =
-  let
+splitToken :: Token -> Result (Encoded Base64Url, Encoded Base64Url)
+splitToken (Token str)
+  | length splitStr == 2 = Ok $ toPair splitStr
+  | otherwise = Err "Malformed token"
+  where
      splitStr = split 46 str
      toPair [x, y] = (Encoded x, Encoded y)
-  in
-    if length splitStr /= 2
-       then Nothing
-       else Just (toPair splitStr)
 
-verify :: PublicKey -> Token -> Bool
-verify pk token =
-  case splitToken token of
-     Nothing -> False
-     Just (payloadEnc, signatureEnc) ->
-       let
-        signature =
-          Utils.pad signatureEnc
-           |> Decoder.decode
-       in
-         result (const False) ((dverify pk (encoded payloadEnc)) . Signature) signature
-
+verify :: PublicKey -> Int -> Token -> Result Token
+verify pk time token = do
+  (payloadEnc, signatureEnc) <- splitToken token
+  payload <- (Utils.pad payloadEnc |> Decoder.decode :: Result ByteString) >>= (\x-> Decoder.decode $ (Encoded x :: Encoded JSON)) :: Result Payload
+  Payload.verify time payload
+  signature <- Utils.pad signatureEnc |> Decoder.decode :: Result ByteString
+  if dverify pk (encoded payloadEnc) (Signature signature)
+    then Ok token
+    else Err "Token is invalid"
