@@ -1,5 +1,7 @@
 module Crypto.Token where
 
+import HuskPrelude
+import Data.Result
 import Crypto.Payload
 import Crypto.Sign.Ed25519
   ( dsign
@@ -8,11 +10,12 @@ import Crypto.Sign.Ed25519
   , SecretKey(..)
   , Signature(..)
   )
-import Encdec.Types
 import Encdec.Utils as Utils
 import Encdec.Encoder as Encoder
 import Encdec.Decoder as Decoder
-import Data.ByteString (split, ByteString)
+import Encdec.Encoded
+import Encdec.Encoding
+import Data.ByteString (split)
 
 newtype Token = Token
   { unToken :: ByteString

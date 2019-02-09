@@ -3,11 +3,12 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 module Crypto.Payload where
 
+import HuskPrelude
+import Data.Result
 import GHC.Generics (Generic)
 import Encdec.Encoder
 import Encdec.Decoder
-import Encdec.Types
-import Data.Text (Text)
+import Encdec.Encoded
 import qualified Data.ByteString.Lazy as BSL
 import qualified Data.Aeson as Aeson
 import Data.Time.Clock.POSIX (getPOSIXTime)

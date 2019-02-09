@@ -1,11 +1,13 @@
 module PayloadSpec where
 
+import HuskPrelude
+import Data.Result
 import Test.Hspec
-import Encdec.Types
 import Encdec.Encoder as Encoder
 import Encdec.Decoder as Decoder
-import Crypto.Payload
-import Data.ByteString (ByteString)
+import Encdec.Encoded
+import Encdec.Encoding
+import Crypto.Payload as Payload
 
 spec :: Spec
 spec = do

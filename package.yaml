@@ -12,9 +12,11 @@ stability:           Experimental
 
 default-extensions:
 - OverloadedStrings
+- NoImplicitPrelude
 
 dependencies:
 - base >= 4.7 && < 5
+- husk-prelude
 - encdec
 - text
 - bytestring
